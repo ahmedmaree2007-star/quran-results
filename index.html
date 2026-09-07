@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الاستعلام عن نتيجة مسابقة القرآن الكريم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep-green:#123524;
+    --mid-green:#1f5c3f;
+    --gold:#bd9a3b;
+    --gold-light:#e4cb84;
+    --cream:#f7f2e7;
+    --ink:#1b2620;
+    --line: rgba(189,154,59,.35);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Tajawal', sans-serif;
+    min-height:100vh;
+  }
+
+  /* شريط زخرفي علوي */
+  .top-band{
+    height:8px;
+    background: repeating-linear-gradient(90deg, var(--gold) 0 18px, var(--deep-green) 18px 36px);
+  }
+
+  header{
+    background: radial-gradient(circle at 30% -10%, var(--mid-green) 0%, var(--deep-green) 55%);
+    color:var(--cream);
+    padding:56px 20px 70px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+      radial-gradient(circle, var(--gold-light) 1px, transparent 1.4px);
+    background-size: 26px 26px;
+    opacity:.08;
+  }
+  .eyebrow-icon{
+    font-size:34px;
+    display:block;
+    margin-bottom:14px;
+    color:var(--gold-light);
+  }
+  header h1{
+    font-family:'Amiri', serif;
+    font-size:clamp(28px, 5vw, 42px);
+    margin:0 0 10px;
+    font-weight:700;
+  }
+  header p{
+    margin:0;
+    font-size:16px;
+    color:var(--gold-light);
+    max-width:520px;
+    margin-inline:auto;
+    line-height:1.9;
+  }
+
+  main{
+    max-width:640px;
+    margin:-38px auto 60px;
+    padding:0 20px;
+  }
+
+  .search-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:0 18px 40px -18px rgba(18,53,36,.35);
+    padding:34px 28px;
+  }
+  .search-card label{
+    display:block;
+    font-weight:700;
+    margin-bottom:10px;
+    font-size:15px;
+    color:var(--deep-green);
+  }
+  .search-row{
+    display:flex;
+    gap:10px;
+  }
+  input#nid{
+    flex:1;
+    padding:14px 16px;
+    border:1.5px solid #d8cfb8;
+    border-radius:9px;
+    font-family:'Tajawal', sans-serif;
+    font-size:16px;
+    letter-spacing:.5px;
+    outline:none;
+    transition:border-color .15s;
+  }
+  input#nid:focus{
+    border-color:var(--gold);
+  }
+  button#search-btn{
+    background:var(--deep-green);
+    color:#fff;
+    border:none;
+    padding:0 26px;
+    border-radius:9px;
+    font-family:'Tajawal', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    transition:background .15s;
+  }
+  button#search-btn:hover{
+    background:var(--mid-green);
+  }
+  .hint{
+    margin-top:10px;
+    font-size:12.5px;
+    color:#8a8270;
+  }
+
+  /* نتيجة */
+  #result-area{
+    margin-top:26px;
+  }
+  .result-card{
+    border-radius:14px;
+    padding:26px 24px;
+    border:1px solid var(--line);
+    background:#fffdf7;
+    animation:fadein .35s ease;
+  }
+  @keyframes fadein{
+    from{opacity:0; transform:translateY(6px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .result-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px dashed var(--line);
+    padding-bottom:16px;
+    margin-bottom:16px;
+  }
+  .result-name{
+    font-family:'Amiri', serif;
+    font-size:22px;
+    font-weight:700;
+    color:var(--deep-green);
+  }
+  .status-pill{
+    padding:6px 16px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+  }
+  .status-pass{background:#e4f1e8; color:#1f6b3f;}
+  .status-review{background:#fbeae0; color:#a1521c;}
+
+  .grid-info{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px 18px;
+  }
+  .info-item{
+    background:var(--cream);
+    border-radius:9px;
+    padding:12px 14px;
+  }
+  .info-item .k{
+    font-size:12px;
+    color:#8a8270;
+    margin-bottom:4px;
+  }
+  .info-item .v{
+    font-size:16px;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .score-big{
+    grid-column:1 / -1;
+    text-align:center;
+    padding:18px;
+    background:linear-gradient(135deg, var(--deep-green), var(--mid-green));
+    color:#fff;
+    border-radius:10px;
+  }
+  .score-big .v{
+    font-size:34px;
+    color:#fff;
+    font-family:'Amiri', serif;
+  }
+  .score-big .k{
+    color:var(--gold-light);
+  }
+
+  .not-found{
+    text-align:center;
+    padding:26px 10px;
+    color:#8a8270;
+    font-size:15px;
+  }
+  .not-found b{color:var(--ink);}
+
+  footer{
+    text-align:center;
+    padding:26px 20px 40px;
+    color:#8a8270;
+    font-size:13px;
+  }
+
+  @media (max-width:420px){
+    .search-row{flex-direction:column;}
+    button#search-btn{padding:14px;}
+    .grid-info{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="top-band"></div>
+
+<header>
+  <span class="eyebrow-icon">﴾</span>
+  <h1>نتيجة مسابقة القرآن الكريم</h1>
+  <p>ادخل الرقم القومي للمتسابق للاطلاع على النتيجة والترتيب</p>
+</header>
+
+<main>
+  <div class="search-card">
+    <label for="nid">الرقم القومي</label>
+    <div class="search-row">
+      <input id="nid" type="text" inputmode="numeric" maxlength="14" placeholder="مثال: 30105123456789">
+      <button id="search-btn">استعلام</button>
+    </div>
+    <div class="hint">بيانات تجريبية للتجربة فقط — سيتم استبدالها بالنتائج الفعلية</div>
+  </div>
+
+  <div id="result-area"></div>
+</main>
+
+<footer>جميع الحقوق محفوظة — مسابقة القرآن الكريم</footer>
+
+<script>
+// بيانات وهمية للتجربة فقط
+const results = [
+  {nid:"30101011234561", name:"أحمد محمود السيد", group:"الفرقة الأولى", score:98, total:100, rank:1, status:"pass"},
+  {nid:"30102022345672", name:"مريم علي حسن", group:"الفرقة الثانية", score:95, total:100, rank:2, status:"pass"},
+  {nid:"30103033456783", name:"يوسف إبراهيم عبدالله", group:"الفرقة الأولى", score:91, total:100, rank:3, status:"pass"},
+  {nid:"30104044567894", name:"فاطمة أحمد النجار", group:"الفرقة الثالثة", score:88, total:100, rank:4, status:"pass"},
+  {nid:"30105055678905", name:"عبدالرحمن سامي فتحي", group:"الفرقة الثانية", score:76, total:100, rank:5, status:"pass"},
+  {nid:"30106066789016", name:"سارة وليد كامل", group:"الفرقة الأولى", score:63, total:100, rank:6, status:"pass"},
+  {nid:"30107077890127", name:"محمد خالد يوسف", group:"الفرقة الثالثة", score:47, total:100, rank:7, status:"review"},
+  {nid:"30108088901238", name:"نور الدين حسام", group:"الفرقة الثانية", score:39, total:100, rank:8, status:"review"},
+];
+
+const input = document.getElementById('nid');
+const btn = document.getElementById('search-btn');
+const area = document.getElementById('result-area');
+
+function render(nid){
+  const student = results.find(r => r.nid === nid.trim());
+  if(!student){
+    area.innerHTML = `
+      <div class="result-card">
+        <div class="not-found">
+          لا توجد نتيجة مسجلة بهذا الرقم القومي.<br>
+          تأكد من الرقم وأعد المحاولة، أو راجع اللجنة المنظمة.<br><br>
+          <b>للتجربة استخدم:</b> 30101011234561
+        </div>
+      </div>`;
+    return;
+  }
+  const passed = student.status === "pass";
+  area.innerHTML = `
+    <div class="result-card">
+      <div class="result-top">
+        <div class="result-name">${student.name}</div>
+        <div class="status-pill ${passed ? 'status-pass':'status-review'}">
+          ${passed ? 'ناجح' : 'بحاجة لمراجعة'}
+        </div>
+      </div>
+      <div class="grid-info">
+        <div class="info-item">
+          <div class="k">الفرقة</div>
+          <div class="v">${student.group}</div>
+        </div>
+        <div class="info-item">
+          <div class="k">الترتيب</div>
+          <div class="v">${student.rank}</div>
+        </div>
+        <div class="score-big">
+          <div class="k">الدرجة الكلية</div>
+          <div class="v">${student.score} / ${student.total}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+btn.addEventListener('click', () => render(input.value));
+input.addEventListener('keydown', e => { if(e.key === 'Enter') render(input.value); });
+</script>
+
+</body>
+</html>
