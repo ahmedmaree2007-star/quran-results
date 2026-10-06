@@ -1,314 +1,135 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الاستعلام عن نتيجة مسابقة القرآن الكريم</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نتائج مسابقة القرآن الكريم – مسجد النور</title>
+<meta name="description" content="الاستعلام عن نتيجة مسابقة القرآن الكريم بمسجد النور برقم المتسابق">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --deep-green:#123524;
-    --mid-green:#1f5c3f;
-    --gold:#bd9a3b;
-    --gold-light:#e4cb84;
-    --cream:#f7f2e7;
-    --ink:#1b2620;
-    --line: rgba(189,154,59,.35);
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--cream);
-    color:var(--ink);
-    font-family:'Tajawal', sans-serif;
-    min-height:100vh;
-  }
-
-  /* شريط زخرفي علوي */
-  .top-band{
-    height:8px;
-    background: repeating-linear-gradient(90deg, var(--gold) 0 18px, var(--deep-green) 18px 36px);
-  }
-
-  header{
-    background: radial-gradient(circle at 30% -10%, var(--mid-green) 0%, var(--deep-green) 55%);
-    color:var(--cream);
-    padding:56px 20px 70px;
-    text-align:center;
-    position:relative;
-    overflow:hidden;
-  }
-  header::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background-image:
-      radial-gradient(circle, var(--gold-light) 1px, transparent 1.4px);
-    background-size: 26px 26px;
-    opacity:.08;
-  }
-  .eyebrow-icon{
-    font-size:34px;
-    display:block;
-    margin-bottom:14px;
-    color:var(--gold-light);
-  }
-  header h1{
-    font-family:'Amiri', serif;
-    font-size:clamp(28px, 5vw, 42px);
-    margin:0 0 10px;
-    font-weight:700;
-  }
-  header p{
-    margin:0;
-    font-size:16px;
-    color:var(--gold-light);
-    max-width:520px;
-    margin-inline:auto;
-    line-height:1.9;
-  }
-
-  main{
-    max-width:640px;
-    margin:-38px auto 60px;
-    padding:0 20px;
-  }
-
-  .search-card{
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:14px;
-    box-shadow:0 18px 40px -18px rgba(18,53,36,.35);
-    padding:34px 28px;
-  }
-  .search-card label{
-    display:block;
-    font-weight:700;
-    margin-bottom:10px;
-    font-size:15px;
-    color:var(--deep-green);
-  }
-  .search-row{
-    display:flex;
-    gap:10px;
-  }
-  input#nid{
-    flex:1;
-    padding:14px 16px;
-    border:1.5px solid #d8cfb8;
-    border-radius:9px;
-    font-family:'Tajawal', sans-serif;
-    font-size:16px;
-    letter-spacing:.5px;
-    outline:none;
-    transition:border-color .15s;
-  }
-  input#nid:focus{
-    border-color:var(--gold);
-  }
-  button#search-btn{
-    background:var(--deep-green);
-    color:#fff;
-    border:none;
-    padding:0 26px;
-    border-radius:9px;
-    font-family:'Tajawal', sans-serif;
-    font-weight:700;
-    font-size:15px;
-    cursor:pointer;
-    transition:background .15s;
-  }
-  button#search-btn:hover{
-    background:var(--mid-green);
-  }
-  .hint{
-    margin-top:10px;
-    font-size:12.5px;
-    color:#8a8270;
-  }
-
-  /* نتيجة */
-  #result-area{
-    margin-top:26px;
-  }
-  .result-card{
-    border-radius:14px;
-    padding:26px 24px;
-    border:1px solid var(--line);
-    background:#fffdf7;
-    animation:fadein .35s ease;
-  }
-  @keyframes fadein{
-    from{opacity:0; transform:translateY(6px);}
-    to{opacity:1; transform:translateY(0);}
-  }
-  .result-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    border-bottom:1px dashed var(--line);
-    padding-bottom:16px;
-    margin-bottom:16px;
-  }
-  .result-name{
-    font-family:'Amiri', serif;
-    font-size:22px;
-    font-weight:700;
-    color:var(--deep-green);
-  }
-  .status-pill{
-    padding:6px 16px;
-    border-radius:999px;
-    font-size:13px;
-    font-weight:700;
-  }
-  .status-pass{background:#e4f1e8; color:#1f6b3f;}
-  .status-review{background:#fbeae0; color:#a1521c;}
-
-  .grid-info{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px 18px;
-  }
-  .info-item{
-    background:var(--cream);
-    border-radius:9px;
-    padding:12px 14px;
-  }
-  .info-item .k{
-    font-size:12px;
-    color:#8a8270;
-    margin-bottom:4px;
-  }
-  .info-item .v{
-    font-size:16px;
-    font-weight:700;
-    color:var(--ink);
-  }
-  .score-big{
-    grid-column:1 / -1;
-    text-align:center;
-    padding:18px;
-    background:linear-gradient(135deg, var(--deep-green), var(--mid-green));
-    color:#fff;
-    border-radius:10px;
-  }
-  .score-big .v{
-    font-size:34px;
-    color:#fff;
-    font-family:'Amiri', serif;
-  }
-  .score-big .k{
-    color:var(--gold-light);
-  }
-
-  .not-found{
-    text-align:center;
-    padding:26px 10px;
-    color:#8a8270;
-    font-size:15px;
-  }
-  .not-found b{color:var(--ink);}
-
-  footer{
-    text-align:center;
-    padding:26px 20px 40px;
-    color:#8a8270;
-    font-size:13px;
-  }
-
-  @media (max-width:420px){
-    .search-row{flex-direction:column;}
-    button#search-btn{padding:14px;}
-    .grid-info{grid-template-columns:1fr;}
-  }
+:root{--deep:#093528;--green:#0e4a3a;--mint:#e6efe9;--page:#f3f6f4;--card:#fff;--ink:#14302a;--mute:#5c726a;--brass:#b8893a;--brass2:#e3c47d;--line:#d6e1da;--bad:#8a3b2e;--star:#fff}
+@media (prefers-color-scheme:dark){:root{--deep:#06201a;--green:#0b3a2e;--mint:#16312a;--page:#0c1a16;--card:#122622;--ink:#e8f0ea;--mute:#9db3a9;--brass:#d9aa4a;--brass2:#f0d28c;--line:#254038;--bad:#e5a595}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--page);color:var(--ink);font-family:Cairo,Tahoma,sans-serif;line-height:1.8;min-height:100vh;display:flex;flex-direction:column}
+.hero{position:relative;background:#093528 url(mosque.jpg) center 72%/cover no-repeat;color:#f5f8f4;text-align:center;padding:64px 20px 118px;overflow:hidden;text-shadow:0 2px 14px rgba(0,0,0,.45)}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,32,26,.62),rgba(9,53,40,.88))}
+.hero>*{position:relative}
+.bism{font-family:Amiri,serif;font-size:clamp(20px,4vw,28px);color:var(--brass2);margin:0 0 14px}
+.hero h1{font-family:Amiri,serif;font-weight:700;font-size:clamp(32px,7vw,56px);line-height:1.35;margin:0}
+.hero p{margin:10px 0 0;font-size:clamp(15px,2.6vw,18px);opacity:.88}
+.rule{display:flex;align-items:center;justify-content:center;gap:12px;margin:18px auto 0;max-width:260px;color:var(--brass2)}
+.rule::before,.rule::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--brass2))}
+.rule::after{transform:scaleX(-1)}
+.rule i{width:9px;height:9px;transform:rotate(45deg);border:1.5px solid var(--brass2)}
+main{flex:1;width:100%;max-width:680px;margin:-62px auto 0;padding:0 16px 40px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:0 18px 40px -22px rgba(6,32,26,.45)}
+.panel label{display:block;font-weight:700;font-size:17px;margin-bottom:4px}
+.hint{color:var(--mute);font-size:14px;margin:0 0 14px}
+.row{display:flex;gap:10px}
+input{flex:1;min-width:0;font:inherit;font-size:20px;font-weight:600;letter-spacing:.04em;padding:13px 16px;border:2px solid var(--line);border-radius:12px;background:var(--page);color:inherit;direction:ltr;text-align:center}
+input::placeholder{font-weight:400;letter-spacing:0;color:var(--mute)}
+input:focus,button:focus-visible{outline:none;border-color:var(--brass);box-shadow:0 0 0 4px rgba(184,137,58,.25)}
+button{font:inherit;font-weight:700;padding:13px 26px;border:0;border-radius:12px;background:var(--green);color:#fff;cursor:pointer;transition:background .15s,transform .1s}
+button:hover{background:var(--deep)}button:active{transform:scale(.98)}button:disabled{opacity:.6;cursor:wait}
+@media (prefers-color-scheme:dark){button{background:var(--brass);color:#1a1405}button:hover{background:var(--brass2)}}
+.err{margin:16px 0 0;padding:12px 14px;border-radius:10px;background:rgba(138,59,46,.1);color:var(--bad);font-weight:600}
+.cert{margin-top:22px;border:2px solid var(--brass);border-radius:14px;padding:6px;animation:rise .45s ease-out both}
+.cert-in{border:1px solid var(--brass);border-radius:9px;padding:26px 22px;text-align:center;background:var(--card)}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.cert{animation:none}}
+.kicker{margin:0;color:var(--mute);font-size:14px}
+.cert h2{font-family:Amiri,serif;font-size:clamp(30px,6vw,40px);line-height:1.4;margin:2px 0 8px;color:var(--green)}
+@media (prefers-color-scheme:dark){.cert h2{color:var(--brass2)}}
+.badge{display:inline-block;padding:3px 16px;border-radius:99px;background:var(--mint);color:var(--green);font-weight:700;font-size:15px}
+@media (prefers-color-scheme:dark){.badge{color:var(--brass2)}}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0 4px}
+.stat{padding:12px 6px;border-radius:12px;background:var(--page);border:1px solid var(--line)}
+.stat b{display:block;font-size:26px;line-height:1.3}.stat span{font-size:13px;color:var(--mute)}
+.stat.rank{border-color:var(--brass);background:linear-gradient(180deg,rgba(184,137,58,.16),rgba(184,137,58,.04))}
+.stat.rank b{color:var(--brass)}
+.msg{margin:18px 0 0;padding:16px 18px;border-radius:12px;font-family:Amiri,serif;font-size:clamp(20px,3.6vw,24px);line-height:2;background:rgba(14,74,58,.07);border-right:5px solid var(--green)}
+.msg.no{background:rgba(138,59,46,.07);border-color:var(--bad)}
+.actions{margin-top:16px;text-align:center}
+.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);padding:9px 20px;font-size:15px}
+.ghost:hover{background:var(--mint);color:var(--ink)}
+#top{margin-top:26px}
+#top h3{font-family:Amiri,serif;font-size:26px;margin:22px 0 8px;color:var(--green)}
+@media (prefers-color-scheme:dark){#top h3{color:var(--brass2)}}
+.tbl{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.tbl div{display:grid;grid-template-columns:90px 1fr auto;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);align-items:center}
+.tbl div:last-child{border:0}.tbl .n{color:var(--brass);font-weight:800}.tbl .s{font-weight:700}
+footer{text-align:center;color:var(--mute);font-size:14px;padding:22px 16px 30px}
+@media (max-width:480px){.row{flex-direction:column}.panel{padding:20px}.stats{grid-template-columns:repeat(2,1fr);gap:8px}.stat b{font-size:22px}}
+@media print{.hero::before,.panel>:not(#out),.actions,#top,footer{display:none!important}.hero{background:none;color:#000;padding:10px}.bism,.hero p{color:#000}main{margin:0}.panel{border:0;box-shadow:none}}
 </style>
 </head>
 <body>
-
-<div class="top-band"></div>
-
-<header>
-  <span class="eyebrow-icon">﴾</span>
-  <h1>نتيجة مسابقة القرآن الكريم</h1>
-  <p>ادخل الرقم القومي للمتسابق للاطلاع على النتيجة والترتيب</p>
+<header class="hero">
+  <p class="bism">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+  <h1>مسابقة القرآن الكريم</h1>
+  <p>مسجد النور · نتائج المتسابقين</p>
+  <div class="rule"><i></i></div>
 </header>
-
 <main>
-  <div class="search-card">
-    <label for="nid">الرقم القومي</label>
-    <div class="search-row">
-      <input id="nid" type="text" inputmode="numeric" maxlength="14" placeholder="مثال: 30105123456789">
-      <button id="search-btn">استعلام</button>
+  <section class="panel">
+    <label for="num">الاستعلام عن النتيجة</label>
+    <p class="hint">اكتب رقم المتسابق كما هو مدوّن في بطاقتك.</p>
+    <div class="row">
+      <input id="num" inputmode="numeric" autocomplete="off" placeholder="رقم المتسابق" aria-label="رقم المتسابق">
+      <button id="go">عرض النتيجة</button>
     </div>
-    <div class="hint">بيانات تجريبية للتجربة فقط — سيتم استبدالها بالنتائج الفعلية</div>
-  </div>
-
-  <div id="result-area"></div>
+    <div id="out" aria-live="polite"></div>
+  </section>
+  <section id="top"></section>
 </main>
-
-<footer>جميع الحقوق محفوظة — مسابقة القرآن الكريم</footer>
-
+<footer>مسابقة القرآن الكريم · مسجد النور — تقبّل الله منا ومنكم</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
 <script>
-// بيانات وهمية للتجربة فقط
-const results = [
-  {nid:"30101011234561", name:"أحمد محمود السيد", group:"الفرقة الأولى", score:98, total:100, rank:1, status:"pass"},
-  {nid:"30102022345672", name:"مريم علي حسن", group:"الفرقة الثانية", score:95, total:100, rank:2, status:"pass"},
-  {nid:"30103033456783", name:"يوسف إبراهيم عبدالله", group:"الفرقة الأولى", score:91, total:100, rank:3, status:"pass"},
-  {nid:"30104044567894", name:"فاطمة أحمد النجار", group:"الفرقة الثالثة", score:88, total:100, rank:4, status:"pass"},
-  {nid:"30105055678905", name:"عبدالرحمن سامي فتحي", group:"الفرقة الثانية", score:76, total:100, rank:5, status:"pass"},
-  {nid:"30106066789016", name:"سارة وليد كامل", group:"الفرقة الأولى", score:63, total:100, rank:6, status:"pass"},
-  {nid:"30107077890127", name:"محمد خالد يوسف", group:"الفرقة الثالثة", score:47, total:100, rank:7, status:"review"},
-  {nid:"30108088901238", name:"نور الدين حسام", group:"الفرقة الثانية", score:39, total:100, rank:8, status:"review"},
-];
+const db = supabase.createClient(CFG.URL, CFG.KEY);
+const $ = id => document.getElementById(id);
+const norm = s => s.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).trim();
+const el = (t, txt, cls) => { const e = document.createElement(t); if (txt != null) e.textContent = txt; if (cls) e.className = cls; return e; };
+const ORD = {1:'الأول',2:'الثاني',3:'الثالث'};
+const stat = (v, l, cls) => { const d = el('div', null, 'stat ' + (cls || '')); d.append(el('b', v), el('span', l)); return d; };
 
-const input = document.getElementById('nid');
-const btn = document.getElementById('search-btn');
-const area = document.getElementById('result-area');
-
-function render(nid){
-  const student = results.find(r => r.nid === nid.trim());
-  if(!student){
-    area.innerHTML = `
-      <div class="result-card">
-        <div class="not-found">
-          لا توجد نتيجة مسجلة بهذا الرقم القومي.<br>
-          تأكد من الرقم وأعد المحاولة، أو راجع اللجنة المنظمة.<br><br>
-          <b>للتجربة استخدم:</b> 30101011234561
-        </div>
-      </div>`;
-    return;
-  }
-  const passed = student.status === "pass";
-  area.innerHTML = `
-    <div class="result-card">
-      <div class="result-top">
-        <div class="result-name">${student.name}</div>
-        <div class="status-pill ${passed ? 'status-pass':'status-review'}">
-          ${passed ? 'ناجح' : 'بحاجة لمراجعة'}
-        </div>
-      </div>
-      <div class="grid-info">
-        <div class="info-item">
-          <div class="k">الفرقة</div>
-          <div class="v">${student.group}</div>
-        </div>
-        <div class="info-item">
-          <div class="k">الترتيب</div>
-          <div class="v">${student.rank}</div>
-        </div>
-        <div class="score-big">
-          <div class="k">الدرجة الكلية</div>
-          <div class="v">${student.score} / ${student.total}</div>
-        </div>
-      </div>
-    </div>`;
+async function search() {
+  const n = norm($('num').value), out = $('out');
+  out.replaceChildren();
+  if (!n) { out.append(el('p', 'اكتب رقم المتسابق أولًا.', 'err')); return; }
+  $('go').disabled = true; $('go').textContent = 'جارٍ البحث…';
+  const { data, error } = await db.rpc('get_result', { p_number: n });
+  $('go').disabled = false; $('go').textContent = 'عرض النتيجة';
+  if (error) { out.append(el('p', 'تعذّر الاتصال بالخادم. تحقق من الإنترنت وحاول مرة أخرى.', 'err')); return; }
+  if (!data) { out.append(el('p', 'لا توجد نتيجة بهذا الرقم. تأكد من الرقم وحاول مرة أخرى.', 'err')); return; }
+  const cert = el('div', null, 'cert'), inn = el('div', null, 'cert-in');
+  const stats = el('div', null, 'stats');
+  stats.append(stat(data.hifz + ' / 70', 'الحفظ'), stat(data.tajweed + ' / 30', 'التجويد'),
+    stat(data.score + ' / 100', 'المجموع'), stat(ORD[data.rank] || data.rank, 'المركز في الفرع', 'rank'));
+  inn.append(el('p', 'نتيجة المتسابق رقم ' + data.number, 'kicker'), el('h2', data.name), el('span', data.branch, 'badge'), stats,
+    data.passed
+      ? el('div', 'بارك الله فيك يا ' + data.name + '، وجعل القرآن ربيع قلبك ونور صدرك ومؤنسك في دنياك وآخرتك. مبارك نجاحك!', 'msg')
+      : el('div', 'لم توفق في هذه المرحلة، نتمنى لك التوفيق.', 'msg no'));
+  cert.append(inn);
+  const act = el('div', null, 'actions'), pr = el('button', 'طباعة / حفظ كـ PDF', 'ghost'); pr.onclick = () => window.print();
+  act.append(pr); out.append(cert, act);
+  cert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
+$('go').onclick = search;
+$('num').addEventListener('keydown', e => { if (e.key === 'Enter') search(); });
 
-btn.addEventListener('click', () => render(input.value));
-input.addEventListener('keydown', e => { if(e.key === 'Enter') render(input.value); });
+(async () => {
+  const { data } = await db.rpc('get_top');
+  if (!data || !data.length) return;
+  const by = {}; data.forEach(r => (by[r.branch] ||= []).push(r));
+  Object.entries(by).forEach(([b, rows]) => {
+    $('top').append(el('h3', 'الأوائل – ' + b));
+    const t = el('div', null, 'tbl');
+    rows.forEach(r => { const d = el('div'); d.append(el('span', 'المركز ' + (ORD[r.rk] || r.rk), 'n'), el('span', r.name), el('span', r.score, 's')); t.append(d); });
+    $('top').append(t);
+  });
+})();
 </script>
-
 </body>
 </html>
